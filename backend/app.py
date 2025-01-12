@@ -8,18 +8,21 @@ import googlemaps
 from flask_migrate import Migrate
 from dotenv import load_dotenv
 import os
-
+import base64
 
 load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
 
-
+credentials_base64 = os.getenv("GOOGLE_APPLICATION_CREDENTIALS_BASE64")
+if credentials_base64:
+    with open("mcc-carpools-credentials.json", "wb") as f:
+        f.write(base64.b64decode(credentials_base64))
+GOOGLE_APPLICATION_CREDENTIALS = "mcc-carpools-credentials.json"
 # Initialize Google Maps Client
 GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
 gmaps = googlemaps.Client(key=GOOGLE_MAPS_API_KEY)
-#username and password for postgres database: carpool_user & mcc_board<3
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("SQLALCHEMY_DATABASE_URI")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
@@ -28,7 +31,7 @@ migrate = Migrate(app, db)
 # Path to your service account key file
 SERVICE_ACCOUNT_FILE = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
-
+    
 # Spreadsheet details
 SPREADSHEET_ID = os.getenv("SPREADSHEET_ID")
 RANGE_NAME = 'Sheet1!A3:C'  # Fetches all rows from A3 to the last row in C
@@ -109,7 +112,7 @@ def get_google_sheets_data():
     creds = service_account.Credentials.from_service_account_file(
         os.getenv("GOOGLE_APPLICATION_CREDENTIALS"), scopes=SCOPES
     )
-    
+
     service = build('sheets', 'v4', credentials=creds)
     sheet = service.spreadsheets()
 

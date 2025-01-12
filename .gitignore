@@ -1,0 +1,30 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environment
+.venv/
+env/
+venv/
+
+# Log files
+*.log
+
+# Cache files
+*.cache/
+*.egg-info/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Large files
+awscliv2.zip
+
+# Environment variables / secrets
+.env
+*.key
+*.pem
+*.json

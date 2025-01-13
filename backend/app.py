@@ -1,8 +1,8 @@
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
-from google.oauth2 import service_account
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 from googleapiclient.discovery import build
-import pandas as pd
 from flask_cors import CORS
 import googlemaps
 from flask_migrate import Migrate
@@ -109,16 +109,18 @@ def get_region(address, lat, long):
 
 
 def get_google_sheets_data():
-    creds = service_account.Credentials.from_service_account_file(
-        os.getenv("GOOGLE_APPLICATION_CREDENTIALS"), scopes=SCOPES
+    scope = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
+    
+    creds = ServiceAccountCredentials.from_json_keyfile_name(
+        os.getenv("GOOGLE_APPLICATION_CREDENTIALS"), scope
     )
-
-    service = build('sheets', 'v4', credentials=creds)
-    sheet = service.spreadsheets()
-
-    result = sheet.values().get(spreadsheetId=SPREADSHEET_ID, range=RANGE_NAME).execute()
-    values = result.get('values', [])
-    return values
+    
+    client = gspread.authorize(creds)
+    
+    sheet = client.open_by_key(os.getenv("SPREADSHEET_ID")).sheet1  # Assuming the first sheet
+    data = sheet.get_all_records()
+    
+    return data
 
 
 @app.route('/api/sheets', methods=['GET'])
@@ -220,4 +222,3 @@ def home():
 if __name__ == '__main__':
     app.run()
 
-    

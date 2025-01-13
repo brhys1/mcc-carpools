@@ -59,14 +59,15 @@ function Riders() {
     axios.get('http://127.0.0.1:5000/api/sheets')
       .then(response => {
         const names = response.data.data.map(item => {
-          const name = item.slice(0, 2).join(' ');
-          const email = item[2] ? item[2] + '@umich.edu' : '';
+          const name = `${item["First Name"]} ${item["Last Name"]}`;
+          const email = item.Uniqname ? `${item.Uniqname}@umich.edu` : '';
           return { name, email };
         });
         setData(names);
       })
       .catch(error => console.error('Error:', error));
   }, []);
+  
 
   const handleDivisionChange = (event) => {
     setDivisions({ ...divisions, [event.target.name]: event.target.checked });

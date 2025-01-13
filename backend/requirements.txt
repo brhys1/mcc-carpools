@@ -6,7 +6,8 @@ google-auth-httplib2==0.2.0
 google-auth-oauthlib==1.2.1
 google-api-python-client==2.70.0
 googlemaps==4.10.0
-pandas==2.2.3
+polars
+pymysql
 psycopg2-binary
 python-dotenv==1.0.1
 requests==2.32.3

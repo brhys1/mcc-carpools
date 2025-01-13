@@ -19,7 +19,7 @@ credentials_base64 = os.getenv("GOOGLE_APPLICATION_CREDENTIALS_BASE64")
 if credentials_base64:
     with open("mcc-carpools-credentials.json", "wb") as f:
         f.write(base64.b64decode(credentials_base64))
-GOOGLE_APPLICATION_CREDENTIALS = "mcc-carpools-credentials.json"
+GOOGLE_APPLICATION_CREDENTIALS = "mcc-carpoo    ls-credentials.json"
 # Initialize Google Maps Client
 GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
 gmaps = googlemaps.Client(key=GOOGLE_MAPS_API_KEY)
@@ -31,7 +31,7 @@ migrate = Migrate(app, db)
 # Path to your service account key file
 SERVICE_ACCOUNT_FILE = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
-    
+
 # Spreadsheet details
 SPREADSHEET_ID = os.getenv("SPREADSHEET_ID")
 RANGE_NAME = 'Sheet1!A3:C'  # Fetches all rows from A3 to the last row in C
@@ -213,6 +213,11 @@ def add_rider():
         return jsonify({'error': str(e)}), 500
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+@app.route('/')
+def home():
+    return "Hello, Vercel!"
 
+if __name__ == '__main__':
+    app.run()
+
+    

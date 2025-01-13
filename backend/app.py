@@ -1,6 +1,8 @@
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 import gspread
+import json
+from google.oauth2.service_account import Credentials
 from oauth2client.service_account import ServiceAccountCredentials
 from googleapiclient.discovery import build
 from flask_cors import CORS
@@ -16,9 +18,8 @@ app = Flask(__name__)
 CORS(app)
 
 credentials_base64 = os.getenv("GOOGLE_APPLICATION_CREDENTIALS_BASE64")
-if credentials_base64:
-    with open("mcc-carpools-credentials.json", "wb") as f:
-        f.write(base64.b64decode(credentials_base64))
+service_account_info = json.loads(base64.b64decode(credentials_base64).decode("utf-8"))
+creds = Credentials.from_service_account_info(service_account_info)
 GOOGLE_APPLICATION_CREDENTIALS = "mcc-carpools-credentials.json"
 # Initialize Google Maps Client
 GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
@@ -110,16 +111,9 @@ def get_region(address, lat, long):
 
 def get_google_sheets_data():
     scope = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
-    
-    creds = ServiceAccountCredentials.from_json_keyfile_name(
-        GOOGLE_APPLICATION_CREDENTIALS, scope
-    )
-    
-    client = gspread.authorize(creds)
-    
-    sheet = client.open_by_key(os.getenv("SPREADSHEET_ID")).sheet1  # Assuming the first sheet
+    client = gspread.authorize(creds.with_scopes(scope))
+    sheet = client.open_by_key(os.getenv("SPREADSHEET_ID")).sheet1
     data = sheet.get_all_records()
-    
     return data
 
 

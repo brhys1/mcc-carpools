@@ -2,12 +2,12 @@ Flask==3.1.0
 Flask-Cors==5.0.0
 flask-migrate
 Flask-SQLAlchemy==3.1.1
+gunicorn
 google-auth==2.37.0
 google-auth-httplib2==0.2.0
 google-auth-oauthlib==1.2.1
 google-api-python-client==2.70.0
 googlemaps==4.10.0
-polars
 pymysql
 psycopg2-binary
 python-dotenv==1.0.1

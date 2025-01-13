@@ -28,3 +28,4 @@ awscliv2.zip
 *.keygit rm --cached secrets.env
 *.pem
 *.json
+.vercel

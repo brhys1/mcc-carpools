@@ -56,7 +56,7 @@ function Riders() {
   });
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:5000/api/sheets')
+    axios.get('/api/sheets')
       .then(response => {
         const names = response.data.data.map(item => {
           const name = `${item["First Name"]} ${item["Last Name"]}`;
@@ -98,7 +98,7 @@ function Riders() {
 
     console.log('Submitting Rider Data:', JSON.stringify(riderData, null, 2));
 
-    axios.post('http://127.0.0.1:5000/api/riders', riderData)
+    axios.post('/api/riders', riderData)
       .then(response => {
         console.log(response.data);
         alert('Rider saved successfully!');
@@ -269,7 +269,7 @@ function Drivers() {
 
     console.log(driverData);
 
-    axios.post('http://127.0.0.1:5000/api/drivers', driverData)
+    axios.post('/api/drivers', driverData)
       .then(response => {
         console.log(response.data);
         alert('Driver saved successfully!');

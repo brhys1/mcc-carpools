@@ -24,7 +24,7 @@ Thumbs.db
 awscliv2.zip
 
 # Environment variables / secrets
-secrets.env
+.env
 *.keygit rm --cached secrets.env
 *.pem
 *.json
